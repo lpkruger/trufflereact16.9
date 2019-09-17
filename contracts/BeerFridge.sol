@@ -3,19 +3,26 @@ pragma solidity ^0.4.25;
 contract BeerFridge {
   uint8 beer_count;
   address owner;
-  uint8 fridge_value;
   string message;
 
   constructor() public {
     beer_count = 20;
     owner = msg.sender;
-    fridge_value = 30;
     message ="hello beer fridge";
+  }
+
+  function get_balance() public view returns(uint256) {
+    return address(this).balance;
   }
 
   function sell_beer(address _seller, uint8 _beer_ammount) public {
     beer_count += _beer_ammount;
     //add functionality to pay seller
+  }
+
+  // TODO: remove this method before any public release - it's for debugging
+  function set_beer_count_debug(uint8 _beer_count) public {
+    beer_count = _beer_count;
   }
 
   function display_beer_ammount() public view returns(uint8) {
