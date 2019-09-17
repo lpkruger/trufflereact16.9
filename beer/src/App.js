@@ -68,7 +68,20 @@ function App() {
       display_beer = beer;
     }
     // document.querySelector('.App').innerHTML = '<p>hello</p>';
-    document.querySelector('.beerAmount').innerHTML = `<p>${display_beer} beers in fridge</p>`;
+    const div = document.querySelector('.beerAmount');
+    div.innerHTML = `<p>${display_beer} beers in fridge</p>`;
+    div.innerHTML += `<input type="text" id="new_beer"><input type="button" id="change_beer_button" value="Set beers">`
+    async function changeBeers() {
+      const num = Number(document.getElementById('new_beer').value);
+      console.log(num)
+      if (!isNaN(num) || Number.isInteger(num)) {
+        const tx = await contract.methods.set_beer_count_debug(num).send({'from': accounts[0], 'gas': 500000 });
+        console.log(tx);
+        const contract_beers = await contract.methods.display_beer_ammount().call();
+        setBeer(contract_beers);
+      }
+    }
+    document.getElementById('change_beer_button').addEventListener('click', changeBeers);
   })
 
   init_web3();
